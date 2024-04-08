@@ -79,9 +79,22 @@ const SignupWindow = (props) => {
     );
 };
 
+const InfoWindow = (props) => {
+    return (
+        <div className="infoOfSite">
+            <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
+            <label htmlFor="title">Information</label>
+            <p>This sites purpose is for the user to make an account and create some domos! 
+                You can customize you domos by name, age, and height. You will have the ability
+                to login, logout, and sign up on this website.</p>
+        </div>
+    );
+}
+
 const init = () => {
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
+    const infoButton = document.getElementById('infoButton');
 
     const root = createRoot(document.getElementById('content'));
 
@@ -94,6 +107,12 @@ const init = () => {
     signupButton.addEventListener('click', (e) => {
         e.preventDefault();
         root.render( <SignupWindow />);
+        return false;
+    });
+
+    infoButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        root.render( <InfoWindow />);
         return false;
     });
 
