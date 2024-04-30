@@ -22,6 +22,13 @@ let AccountModel = {};
    by bcrypt), and the created date.
 */
 const AccountSchema = new mongoose.Schema({
+  display: {
+    type: String,
+    required: true,
+    trim: true,
+    unique: true,
+    match: /^[A-Za-z0-9_\-.]{1,16}$/,
+  },
   username: {
     type: String,
     required: true,
@@ -42,6 +49,7 @@ const AccountSchema = new mongoose.Schema({
 // Converts a doc to something we can store in redis later on.
 AccountSchema.statics.toAPI = (doc) => ({
   username: doc.username,
+  display: doc.display,
   _id: doc._id,
 });
 

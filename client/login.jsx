@@ -36,7 +36,7 @@ const handleSignup = (e) => {
         return false;
     }
 
-    helper.sendPost(e.target.action, {username, pass, pass2});
+    helper.sendPost(e.target.action, { username, pass, pass2});
 
     return false;
 };
@@ -54,7 +54,7 @@ const LoginWindow = (props) => {
             <input id="user" type='text' name="username" placeholder="username" />
             <label htmlFor="pass">Password: </label>
             <input id="pass" type="password" name="pass" placeholder="password" />
-            <input className="formSubmit" type="submit" value="Sign in" />
+            <input className="formSubmit" type="submit" value="Sign In" />
         </form>
     );
 };
@@ -67,33 +67,59 @@ const SignupWindow = (props) => {
             action="/signup"
             method="POST"
             className="mainForm">
-
             <label htmlFor="username">Username: </label>
             <input id="user" type='text' name="username" placeholder="username" />
             <label htmlFor="pass">Password: </label>
             <input id="pass" type="password" name="pass" placeholder="password" />
             <label htmlFor="pass2">Password: </label>
             <input id="pass2" type="password" name="pass2" placeholder="retype password" />
-            <input className="formSubmit" type="submit" value="Sign up" />
+            <input className="formSubmit" type="submit" value="Sign Up" />
         </form>
     );
 };
 
-const PublicPost = (props) => {
+const PostList = (props) => {
+    if(props.posts.length === 0){
+        return (
+            <div>
+                <h2>No recent posts...</h2>
+            </div>
+        );
+    }
+
+    const postFull = props.posts.slice(0).reverse().map(post => {
+        let postDate = post.createdDate.toString();
+        let date = postDate.substring(0,10);
+        let time = postDate.substring(11,16);
+        let tdPost = date + ', ' + time;
+
+        return (
+            <div key={post._id} id="postArea" >
+                <div id="username">
+                    <label htmlFor="postsUsername">Posted by: </label>
+                    <h2 id="postsUsername" >{post.username}</h2>
+                </div>
+                <h2 id="td">{tdPost}</h2>
+                <div id="postMsg">
+                    <h3 id="postMsg">{post.post}</h3>
+                </div>
+            </div>
+        );
+    });
+
     return (
         <div>
-            <p>I posted a thing</p>
+            {postFull}
         </div>
-
     );
 };
+
 
 const init = () => {
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
 
     const root = createRoot(document.getElementById('loginSignUp'));
-    const rootP = createRoot(document.getElementById('publicPosts'));
 
     loginButton.addEventListener('click', (e) => {
         e.preventDefault();
@@ -107,7 +133,6 @@ const init = () => {
         return false;
     });
 
-    rootP.render(<PublicPost />, document.getElementById('publicPosts'));
 }
 
 window.onload = init;

@@ -29,11 +29,12 @@ const login = (req, res) => {
 };
 
 const signup = async (req, res) => {
+  const display = `${req.body.display}`;
   const username = `${req.body.username}`;
   const pass = `${req.body.pass}`;
   const pass2 = `${req.body.pass2}`;
 
-  if (!username || !pass || !pass2) {
+  if (!display || !username || !pass || !pass2) {
     return res.status(400).json({ error: 'All fields are required!' });
   }
 
@@ -43,7 +44,7 @@ const signup = async (req, res) => {
 
   try {
     const hash = await Account.generateHash(pass);
-    const newAccount = new Account({ username, password: hash });
+    const newAccount = new Account({ username, display:display, password: hash });
     await newAccount.save();
     req.session.account = Account.toAPI(newAccount);
     return res.json({ redirect: '/app' });
