@@ -35,7 +35,7 @@ const app = express();
 redisClient.connect().then(() => {
   app.use(helmet());
   app.use('/assets', express.static(path.resolve(`${__dirname}/../hosted/`)));
-  app.use(favicon(`${__dirname}/../hosted/img/favicon.png`));
+  app.use(favicon(`${__dirname}/../hosted/img/sticky-notes.png`));
   app.use(compression());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());

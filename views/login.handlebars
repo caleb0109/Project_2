@@ -1,26 +1,44 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>DomoMaker</title>
-  <link rel="shortcut icon" href="/assets/img/favicon.png"/>
+  <title>PostIt</title>
+  <link rel="shortcut icon" href="/assets/img/sticky-notes.png"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
 </head>
-<body> 
-  <nav><a href="/login"><img id="logo" src="/assets/img/face.png" alt="face logo"/></a>
-    <div class="navlink"><a id="loginButton" href="/login">Login</a></div>
-    <div class="navlink"><a id="signupButton" href="/signup">Sign up</a></div>
-    <div class="navlink"><a id="infoButton">Info</a></div>
-  </nav>
-  
-  <section id="content">
+<body>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <img  src="/assets/img/sticky-notes.png">
+        </div>
+        <div class="navbar-menu">
+            <div>
+                <h1>PostIt</h1>
 
-  </section>
+                <a id="loginButton" class="navbar">
+                    Login
+                </a>
 
-  <div id="domoMessage" class='hidden'>
-    <img id="speech" src="/assets/img/speech.png" alt="speech box"/>
-    <h3><span id="errorMessage"></span></h3>
-    <img id="domo" src="assets/img/domo.png" alt="domo"/>
-  </div>
-  <script src="/assets/loginBundle.js"></script>
+                <a id="signupButton" class="navbar"> 
+                    Signup
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="columns is-centered">
+        <div class="column"></div>
+        <div class="column">
+            <section id="loginSignup"></section>
+            <div id="errorBox" class="hidden">
+                <h3><span id="errorMessage"></span></h3>
+            </div>
+        </div>
+        <div class="column"></div>
+    </div>
+
+    <section id="publicPosts">
+    </section>
+    <script src="/assets/loginBundle.js"></script>
 </body>
 </html>
