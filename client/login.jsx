@@ -92,7 +92,8 @@ const init = () => {
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
 
-    const root = createRoot(document.getElementById('content'));
+    const root = createRoot(document.getElementById('loginSignUp'));
+    const rootP = createRoot(document.getElementById('publicPosts'));
 
     loginButton.addEventListener('click', (e) => {
         e.preventDefault();
@@ -106,7 +107,7 @@ const init = () => {
         return false;
     });
 
-    root.render(<PublicPost />);
+    rootP.render(<PublicPost />, document.getElementById('publicPosts'));
 }
 
 window.onload = init;

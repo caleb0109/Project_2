@@ -1,22 +1,23 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>PostIt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post-It</title>
   <link rel="shortcut icon" href="/assets/img/sticky-notes.png"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
 </head>
 <body>
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<nav class="navbar mx-5 my-1" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <img src="/assets/img/sticky-notes.png">
+            <img class="image is-32x32 my-auto" src="/assets/img/sticky-notes.png">
         </div>
         <div class="navbar-menu">
-            <div>
+            <div class="navbar-start ml-2">
 
-                <h1>PostIt</h1>
+                <h1 class="title m-auto pr-4 pl-1">Post-It</h1>
 
-                <a href="/login">
+                <a class="navbar-item m-auto has-text-centered" href="/login">
                     Logout
                 </a>
             </div>
@@ -24,10 +25,12 @@
     </nav>
 
     <section id="makePost">
+
     </section>
 
     <section id="posts">
+
     </section>
-    <script src="/assets/appBundle.js"></script>
+    <script src="/assets/loginBundle.js"></script>
 </body>
 </html>

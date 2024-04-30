@@ -1,5 +1,5 @@
-const appPage = (req, res) => res.render('app');
+const page = (req, res) => res.render('app');
 
 module.exports = {
-  appPage,
+  page,
 };
