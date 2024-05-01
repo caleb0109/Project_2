@@ -1,6 +1,7 @@
 const models = require('../models');
 
 const { Account } = models;
+const { Post } = models;
 
 const loginPage = (req, res) => res.render('login');
 
@@ -29,12 +30,11 @@ const login = (req, res) => {
 };
 
 const signup = async (req, res) => {
-  const display = `${req.body.display}`;
   const username = `${req.body.username}`;
   const pass = `${req.body.pass}`;
   const pass2 = `${req.body.pass2}`;
 
-  if (!display || !username || !pass || !pass2) {
+  if (!username || !pass || !pass2) {
     return res.status(400).json({ error: 'All fields are required!' });
   }
 
@@ -44,7 +44,7 @@ const signup = async (req, res) => {
 
   try {
     const hash = await Account.generateHash(pass);
-    const newAccount = new Account({ username, display:display, password: hash });
+    const newAccount = new Account({ username, password: hash });
     await newAccount.save();
     req.session.account = Account.toAPI(newAccount);
     return res.json({ redirect: '/app' });
@@ -57,9 +57,67 @@ const signup = async (req, res) => {
   }
 };
 
+//gets the username of the user that is logged in
+const getUsername = (req,res) => {
+  Account.getUsername(req.session.account._id, (err,doc) => {
+    if(err){
+      return res.status(400).json({ error: 'Could not get username'});
+    }
+
+    return res.json({ username: doc });
+  });
+};
+
+//changes the username of the user that is logged in
+const changeUsername = async (req, res) => {
+  console.log(req.body);
+  const newUsername = `${req.body.newUser}`;
+  const oldUsername = `${req.body.oldUsername}`;
+
+  if (!newUsername) {
+    return res.status(400).json({ error: 'All fields are required!' });
+  }
+
+  try {
+    await Account.changeUsername(req.session.account._id, newUsername);
+    await Post.updateUsername(oldUsername, newUsername);
+    return res.status(200).json({ error: 'Username successfully updated' });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ error: 'An error has occured!' });
+  }
+};
+
+//changes the password of the current user
+const changePass = async (req,res) => {
+  const newPass = `${req.body.newPass}`;
+  const newPass2 = `${req.body.newPass2}`;
+
+  if(!newPass || !newPass2) {
+    return res.status(400).json({ error: 'All fields are required!'});
+  }
+
+  if(newPass !== newPass2) {
+    return res.status(400).json({ error: 'New passwords do not match!'});
+  }
+
+  const oldPass = await Account.getCurrentPassword(req.session.account._id);
+  const newPassHash = await Account.generateHash(newPass);  
+
+  if(oldPass === newPass) {
+    return res.status(400).json({ error: 'Old and new passwords do not match!'});
+  }
+
+  await Account.changePass(req.session.account._id, newPass, newPassHash);
+  return res.status(200).json({ error: 'Password successfully updated'});
+}
+
 module.exports = {
   loginPage,
   login,
   logout,
   signup,
+  getUsername,
+  changeUsername,
+  changePass,
 };

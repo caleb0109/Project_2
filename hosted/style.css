@@ -1,0 +1,100 @@
+#signupForm input{
+    margin-right: 2%;
+    margin-top: 1%;
+}
+
+#loginForm input{
+    margin-right: 2%;
+    margin-top: 1%;
+}
+
+#changePassForm input{
+    margin-right: 2%;
+    margin-top: 1%;
+}
+
+#changeUsernameForm input{
+    margin-right: 2%;
+    margin-top: 1%;
+}
+
+#postForm {
+    background-color: #1da1f2;
+    padding: 25px 0px;
+    color: white;
+}
+
+#postForm input{ 
+    margin-right: 2%;
+}
+
+#post{
+    width: 300px;
+}
+
+#noPost{
+    width: 400px;
+    font-size: 1.5em;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 18px;
+}
+
+#postArea{
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #949494;
+    border-radius: 4px;
+    background-color: white;
+    padding: 10px;
+    min-height:60px;
+    overflow: hidden;
+}
+
+#username{
+    width: 49%;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #949494;
+    border-radius: 4px;
+}
+
+#postMsg{
+    background-color: #D3D3D3;
+    border: 2px solid #949494;
+    border-radius: 4px;
+}
+
+#message{ 
+    display:inline; 
+    width: auto;
+    font-size: 50px;
+}
+
+
+#deleteButton{
+    float: right;
+    margin-left: 1%;
+    margin-right: 2%;
+}
+
+#privacyButton{
+    float: right;
+}
+
+#editPostButton{
+    float: left;
+}
+
+#editPostButton input{
+    float: left;
+}
+
+#editPostForm{
+    float: left;
+    margin: auto;
+    margin-top: 2%;
+}

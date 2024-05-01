@@ -22,13 +22,6 @@ let AccountModel = {};
    by bcrypt), and the created date.
 */
 const AccountSchema = new mongoose.Schema({
-  display: {
-    type: String,
-    required: true,
-    trim: true,
-    unique: true,
-    match: /^[A-Za-z0-9_\-.]{1,16}$/,
-  },
   username: {
     type: String,
     required: true,
@@ -49,7 +42,6 @@ const AccountSchema = new mongoose.Schema({
 // Converts a doc to something we can store in redis later on.
 AccountSchema.statics.toAPI = (doc) => ({
   username: doc.username,
-  display: doc.display,
   _id: doc._id,
 });
 
@@ -78,6 +70,36 @@ AccountSchema.statics.authenticate = async (username, password, callback) => {
   } catch (err) {
     return callback(err);
   }
+};
+
+//gets username of the current user
+AccountSchema.statics.getUsername = async (objectId) => {
+  const docs = await AccountModel.findOne({_id: objectId}).select('username').lean().exec();
+  return docs;
+}
+
+//changes the current users username
+AccountSchema.statics.changeUsername = async (_id, newUsername) => {
+  const filter = { _id };
+  const update = { username: newUsername };
+
+  const doc = await AccountModel.findOneAndUpdate(filter, {$set: update});
+  return doc;
+};
+
+//gets the current password of the user
+AccountSchema.statics.getCurrentPassword = async (objectId) => {
+  const doc = await AccountModel.findOne({ _id: objectId }).exec();
+  return doc.unhashedPassword;
+};
+
+//changes the old password of the user to the new one given
+AccountSchema.statics.changePass = async (objectId, unhashed, hashed) => {
+  const filter = { _id: objectId };
+  const update = { unhashedPassword: unhashed, password: hashed };
+
+  const doc = await AccountModel.findOneAndUpdate(filter, update);
+  return doc;
 };
 
 AccountModel = mongoose.model('Account', AccountSchema);

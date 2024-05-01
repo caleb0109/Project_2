@@ -2,6 +2,7 @@ const helper = require('./helper.js');
 const React  = require('react');
 const {createRoot} = require('react-dom/client');
 
+//handles login and sendPost
 const handleLogin = (e) => {
     e.preventDefault();
     helper.hideError();
@@ -18,6 +19,7 @@ const handleLogin = (e) => {
     return false;
 };
 
+//handles the sign up and sendPost
 const handleSignup = (e) => {
     e.preventDefault();
     helper.hideError();
@@ -41,6 +43,7 @@ const handleSignup = (e) => {
     return false;
 };
 
+//handles login window
 const LoginWindow = (props) => {
     return (
         <form id="loginForm"
@@ -59,6 +62,7 @@ const LoginWindow = (props) => {
     );
 };
 
+//handles signup window
 const SignupWindow = (props) => {
     return (
         <form id="signupForm"
@@ -78,6 +82,7 @@ const SignupWindow = (props) => {
     );
 };
 
+//handles lists of all the posts in public spaces
 const PostList = (props) => {
     if(props.posts.length === 0){
         return (
@@ -86,13 +91,13 @@ const PostList = (props) => {
             </div>
         );
     }
-
+  
     const postFull = props.posts.slice(0).reverse().map(post => {
         let postDate = post.createdDate.toString();
         let date = postDate.substring(0,10);
         let time = postDate.substring(11,16);
         let tdPost = date + ', ' + time;
-
+        
         return (
             <div key={post._id} id="postArea" >
                 <div id="username">
@@ -101,19 +106,24 @@ const PostList = (props) => {
                 </div>
                 <h2 id="td">{tdPost}</h2>
                 <div id="postMsg">
-                    <h3 id="postMsg">{post.post}</h3>
+                    <h3 id="message">{post.post}</h3>
                 </div>
             </div>
         );
     });
-
+  
     return (
         <div>
             {postFull}
         </div>
     );
-};
+  };
+  
 
+  //loads all public posts
+const loadPosts = () => {
+    createRoot(document.getElementById('posts')).render(<PostList />);
+}
 
 const init = () => {
     const loginButton = document.getElementById('loginButton');
@@ -133,6 +143,7 @@ const init = () => {
         return false;
     });
 
+    loadPosts();
 }
 
 window.onload = init;

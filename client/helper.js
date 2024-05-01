@@ -28,10 +28,10 @@ const sendPost = async (url, data, handler) => {
     }
   };
 
-  const hideError = () => {
+const hideError = () => {
     document.getElementById('error').classList.add('hidden');
-  };
-
+};
+ 
   module.exports = {
     handleError,
     sendPost,
