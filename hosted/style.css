@@ -19,9 +19,9 @@
 }
 
 #postForm {
-    background-color: #1da1f2;
+    background-color: lightgreen;
     padding: 25px 0px;
-    color: white;
+    color: black;
 }
 
 #postForm input{ 
@@ -97,4 +97,12 @@
     float: left;
     margin: auto;
     margin-top: 2%;
+}
+
+body{
+    background-color: blanchedalmond;
+}
+
+.navbar {
+    background-color: blanchedalmond;
 }
