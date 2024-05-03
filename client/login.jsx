@@ -1,5 +1,6 @@
 const helper = require('./helper.js');
 const React  = require('react');
+const {useState, useEffect} = React;
 const {createRoot} = require('react-dom/client');
 
 //handles login and sendPost
@@ -82,54 +83,66 @@ const SignupWindow = (props) => {
     );
 };
 
-//handles lists of all the posts in public spaces
 const PostList = (props) => {
-    if(props.posts.length === 0){
+    const [posts, setPosts] = useState(props.posts);
+
+    useEffect(() => {
+        const loadPostsFromServer = async () => {
+            const response = await fetch('/getPublicPosts');
+            const data = await response.json();
+            setPosts(data.posts);
+        };
+        loadPostsFromServer();
+    });
+
+    if(posts.length === 0) {
         return (
-            <div>
-                <h2>No recent posts...</h2>
+            <div className="postArea">
+                <h3 className="emptyPost">No posts from user!</h3>
             </div>
         );
     }
-  
-    const postFull = props.posts.slice(0).reverse().map(post => {
-        let postDate = post.createdDate.toString();
-        let date = postDate.substring(0,10);
-        let time = postDate.substring(11,16);
-        let tdPost = date + ', ' + time;
-        
+
+    const postNodes = posts.map(post => {
         return (
-            <div key={post._id} id="postArea" >
+            <div id="postArea" >
                 <div id="username">
-                    <label htmlFor="postsUsername">Posted by: </label>
-                    <h2 id="postsUsername" >{post.username}</h2>
+                    <label htmlFor="postUsername">Posted by: </label>
+                    <h2 id="postUsername" >{post.username}</h2>
                 </div>
-                <h2 id="td">{tdPost}</h2>
+                {/* <h2 id="td">{tdPost}</h2> */}
                 <div id="postMsg">
                     <h3 id="message">{post.post}</h3>
                 </div>
+
             </div>
         );
     });
-  
     return (
-        <div>
-            {postFull}
+        <div className="postArea">
+            {postNodes}
         </div>
     );
   };
+
+//handles lists of all the posts in public spaces
+//loads the list of all the post
+const App = () => {
+    return (
+        <div>
+            <div id="postArea">
+                <PostList posts={[]}/>
+            </div>
+        </div>
+    );
+};
   
-
-  //loads all public posts
-const loadPosts = () => {
-    createRoot(document.getElementById('posts')).render(<PostList />);
-}
-
 const init = () => {
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
 
     const root = createRoot(document.getElementById('loginSignUp'));
+    const postRoot = createRoot(document.getElementById('publicPosts'));
 
     loginButton.addEventListener('click', (e) => {
         e.preventDefault();
@@ -143,7 +156,7 @@ const init = () => {
         return false;
     });
 
-    loadPosts();
+    postRoot.render(<App />);
 }
 
 window.onload = init;

@@ -1,6 +1,8 @@
 const models = require('../models');
 
-const {post} = models;
+const { Account } = models;
+
+const {Post} = models;
 
 const page = (req, res) => res.render('app');
 
@@ -11,7 +13,6 @@ const makePost = async (req,res) => {
     if(!req.body.post){
         return res.status(400).json({ error: "There must be text prior to posting."});
     }
-
     const postData = {
         post: req.body.post,
         privated: req.body.privated,
@@ -24,9 +25,7 @@ const makePost = async (req,res) => {
         await newPost.save();
         return res.status(201).json({ post: newPost.post, privated:newPost.privated, username:newPost.username });
     } catch (err) {
-        if(err.code === 11000){
-            return res.status(400).json({ error: 'Post already exists' });
-        }
+        console.log(err);
         return res.status(500).json({ error: 'An error occured making the post' });
     }
 };
@@ -45,7 +44,8 @@ const editPost = async (req,res) => {
 //deletes the selected post
 const deletePost = async (req,res) => {
     try {
-        await Post.deleteP({_id: req.body._id});
+        
+        await Post.deleteOne({_id: req.body._id});
         return res.status(200).json({_id: req.body._id});
     } catch (err) {
         return res.status(400).json({ error: 'Error while deleting your post!'});
@@ -53,27 +53,31 @@ const deletePost = async (req,res) => {
 }
 
 //gets the private posts
-const getUserPosts = (req,res) => {
-    const pCheck = { $or: [{poster: req.session.account._id }, {privated: false}]};
-    Post.findPost(pCheck, (err,docs) => {
-        if(err){
-            return res.status(400).json({ error: 'Could not get users posts'});
-        }
-
+const getUserPosts = async (req,res) => {
+    try{
+        const userGet = await Account.getUsername(req.session.account._id);
+        const query = {username: userGet.username};
+        const docs = await Post.find(query).select('post privated username createdDate').lean().exec();
         return res.json({posts: docs});
-    });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({error: 'Error retrieving posts!'});
+    }
+
 };
 
 //gets all public posts (ones that are not privated)
-const getPublicPosts = (req,res) => {
-    const pCheck = {privated: false};
-    Post.findPost(pCheck, (err,docs) => {
-        if(err){
-            return res.status(400).json({ error: 'Could not get users posts'});
-        }
+const getPublicPosts = async (req,res) => {
+    try{
+        const query = {privated: false};
+        const docs = await Post.find(query).select('post privated username createdDate').lean().exec();
 
         return res.json({posts: docs});
-    });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({error: 'Error retrieving posts!'});
+    }
+
 };
 
 //changes the privacy of the post

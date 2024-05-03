@@ -74,9 +74,9 @@ AccountSchema.statics.authenticate = async (username, password, callback) => {
 
 //gets username of the current user
 AccountSchema.statics.getUsername = async (objectId) => {
-  const docs = await AccountModel.findOne({_id: objectId}).select('username').lean().exec();
+  const docs = await AccountModel.findOne({_id: objectId}).exec();
   return docs;
-}
+};
 
 //changes the current users username
 AccountSchema.statics.changeUsername = async (_id, newUsername) => {

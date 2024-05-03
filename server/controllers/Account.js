@@ -58,14 +58,14 @@ const signup = async (req, res) => {
 };
 
 //gets the username of the user that is logged in
-const getUsername = (req,res) => {
-  Account.getUsername(req.session.account._id, (err,doc) => {
-    if(err){
-      return res.status(400).json({ error: 'Could not get username'});
-    }
-
-    return res.json({ username: doc });
-  });
+const getUsername = async (req,res) => {
+  try{
+    const docs = await Account.getUsername(req.session.account._id);
+    console.log(docs);
+    return res.json({docs});
+  } catch (err) {
+    return res.status(400).json({ error: 'An error has occured!' });
+  }
 };
 
 //changes the username of the user that is logged in
