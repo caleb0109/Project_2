@@ -21,7 +21,7 @@ const router = (app) => {
   app.post('/editPost', mid.requiresLogin, controllers.App.editPost);
   app.post('/delete', mid.requiresLogin, controllers.App.deletePost);
 
-  app.get('/', controllers.Account.loginPage);
+  app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
   app.get('*', controllers.App.errPage);
 };
 
